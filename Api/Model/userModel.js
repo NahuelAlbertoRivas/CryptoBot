@@ -53,19 +53,20 @@ userSchema.pre("save", async function(next){ // se usa el método ' pre ' justam
 });
 
 // segunda opción
-/* userSchema.pre("save", function(next){
+userSchema.pre("save", function(next){
     if(!this.isModified("password") || this.isNew) return next(); // la segunda cond. pretende verificar si la pass en nueva
 
     this.passwordChangeAt = Date.now() - 1000 ; // si el usuario cambió la pass, tenemos que guardar la info. en la DB
     next();
-}); */
+});
+
 // tercer opción
-/* userSchema.pre(/^find/, function(next){ // esta vez pasamos a verificar una condición que definimos como ' find '
+userSchema.pre(/^find/, function(next){ // esta vez pasamos a verificar una condición que definimos como ' find '
     if(!this.isModified("password") || this.isNew) return next(); // la segunda cond. pretende verificar si la pass en nueva
     // cuando un usuario produzca alguna query en algún endpoint, el método -' find '- usado chequea la misma
     this.find({ active: { $ne: false } }); // método especial de mongoose, permite cambiar el estado del usuario de ' avtiva ' a ' false ' o ' true ', en el que se puede controlar la accesibilidad del usuario
     next();
-}); */
+});
 
 // método para verificar contraseñas
 userSchema.methods.correctPassword = async function (
