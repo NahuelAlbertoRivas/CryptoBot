@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({ // esta almacenará la estructura gener
 
 userSchema.pre("save", async function(next){ // se usa el método ' pre ' justamente para realizar verificaciones antes de guardar directamente en la DB
     // esta fn. se ejecuta sólo si la contraseña fue modificada previamente, de no ser así se continúa con el sig. middleware
-    if(!this.isModified("password")) return next();
+    if(!this.isModified("password")) return next(); 
 
     // encriptamos la contraseña realizando un hash mediante ' bcrypt '
     this.password = await bcrypt.hash(this.password, 12); // le pasamos el campo que queremos encriptar; el segundo parámetro corresponde a  "cuán complejo" se encriptará el string del primer parámetro (obs: a mayor número, más tiempo requerirá -debido a su costo computacional-) [el valor 12 es un estándar de la industria, para este caso dejaremos tal valor]

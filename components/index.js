@@ -29,7 +29,8 @@ export {
     MovingSubmenu, 
     Preloader, 
     SideBar, 
-    Signup, 
+    Signup,
+    Loader,
     useTimeout, 
     AddNetwork, 
     AddTokenPair, 
@@ -40,5 +41,6 @@ export {
     Setting, 
     TopExchangeTokens, 
     TradeTokens, 
-    Trading 
+    Trading,
+    Login
 }
