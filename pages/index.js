@@ -26,15 +26,16 @@ import{
     Login
 } from '../components/index'
 import { CONTEXT } from '../context/context'
+import Head from "next/head";
 
 const index = () => {
   const { TRADING_BOT } = useContext(CONTEXT); // se puede acceder a cualquier instancia definida en el modelo de ' context.js '
   
   // state variable
-  const [activeComponent, setactiveComponent] = useState("Signup"); // por defecto se abre la pág. de inicio
+  const [activeComponent, setactiveComponent] = useState("Home"); // por defecto se abre la pág. de inicio
   const [membershipType, setmembershipType] = useState("Premium");
   const [authBackEndID, setauthBackEndID] = useState("");
-  const [Networks, setNetworks] = useState({});
+  const [networks, setNetworks] = useState({});
   const [networkName, setnetworkName] = useState();
 
   // notificaciones
@@ -49,11 +50,40 @@ const index = () => {
         activeComponent == "Signup" ? (
           <Signup axios={axios} setactiveComponent= {setactiveComponent} notifyError= {notifyError} notifySuccess= {notifySuccess} /> // ' setactiveComponent ' es por si el usuario ya tiene cuenta, entonces se le permite el login
         ) : (
-          "HOME"
+          <div className= "techwave_fn_wrapper">
+            <div className= "techwave_fn_wrap">
+              <Search />
+              <Header networkName= {networkName} setactiveComponent= {setactiveComponent}/>
+              <SideBar setactiveComponent= {setactiveComponent} />
+              {
+                activeComponent == "Home" ? (
+                  <Home />
+                ) : activeComponent == "Trade Tokens" ? (
+                  <TradeTokens />
+                ) : activeComponent == "Top Exchanges Tokens" ? (
+                  <TopExchangeTokens />
+                ) : activeComponent == "Networks" ? (
+                  <Networks networkName= {networkName} setnetworkName= {setnetworkName}/>
+                ) : activeComponent == "Trading" ? (
+                  <Trading axios= {axios} />
+                ) : activeComponent == "Pricing" ? (
+                  <Price />
+                ) : activeComponent == "Profile" ? (
+                  <Profile setactiveComponent= {setactiveComponent} />
+                ) : activeComponent == "Setting" ? (
+                  <Setting />
+                ) : activeComponent == "Add Token Pair" ? (
+                  <AddTokenPair />
+                ) : (
+                  ""
+                )
+              }
+            </div>
+          </div>
         )
       }
 
-      {
+      { // bloque dinámico
         activeComponent == "Login" ? (
           <Login axios={axios} setactiveComponent= {setactiveComponent} notifyError= {notifyError} notifySuccess= {notifySuccess} />
         ) : (

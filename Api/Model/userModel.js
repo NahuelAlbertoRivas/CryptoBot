@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({ // esta almacenará la estructura gener
         lowercase: true,
         default: "notMember",
     },
-    role: { // por ej. admin o user en primer instancia
+    role: { // por ej. admin o user, en primer instancia
         type: String,
         enum: ["user", "admin"],
         default: "user",
@@ -41,31 +41,48 @@ const userSchema = new mongoose.Schema({ // esta almacenará la estructura gener
 // Middlewares
 
 userSchema.pre("save", async function(next){ // se usa el método ' pre ' justamente para realizar verificaciones antes de guardar directamente en la DB
-    // esta fn. se ejecuta sólo si la contraseña fue modificada previamente, de no ser así se continúa con el sig. middleware
-    if(!this.isModified("password")) return next(); 
+        try{    // esta fn. se ejecuta sólo si la contraseña fue modificada previamente, de no ser así se continúa con el sig. middleware
+            if(!this.isModified("password")) return next(); 
 
-    // encriptamos la contraseña realizando un hash mediante ' bcrypt '
-    this.password = await bcrypt.hash(this.password, 12); // le pasamos el campo que queremos encriptar; el segundo parámetro corresponde a  "cuán complejo" se encriptará el string del primer parámetro (obs: a mayor número, más tiempo requerirá -debido a su costo computacional-) [el valor 12 es un estándar de la industria, para este caso dejaremos tal valor]
+            // encriptamos la contraseña realizando un hash mediante ' bcrypt '
+            this.password = await bcrypt.hash(this.password, 12); // le pasamos el campo que queremos encriptar; el segundo parámetro corresponde a  "cuán complejo" se encriptará el string del primer parámetro (obs: a mayor número, más tiempo requerirá -debido a su costo computacional-) [el valor 12 es un estándar de la industria, para este caso dejaremos tal valor]
 
-    // eliminamos el campo ' passwordconfirm ', ya que no será de utilidad almacenarlo en la DB
-    this.passwordConfirm = undefined;
-    next(); // finalmente, pasamos al sig. mid.
-});
+            // eliminamos el campo ' passwordconfirm ', ya que no será de utilidad almacenarlo en la DB
+            this.passwordConfirm = undefined;
+            next(); // finalmente, pasamos al sig. mid.
+        }
+        catch(error){
+            console.log("Catch userModel 1");
+            return next();
+        }
+    });
 
 // segunda opción
 userSchema.pre("save", function(next){
+    try{
     if(!this.isModified("password") || this.isNew) return next(); // la segunda cond. pretende verificar si la pass en nueva
 
     this.passwordChangeAt = Date.now() - 1000 ; // si el usuario cambió la pass, tenemos que guardar la info. en la DB
     next();
+    }
+    catch{
+        console.log("Catch userModel 2");
+        return next();
+    }
 });
 
 // tercer opción
 userSchema.pre(/^find/, function(next){ // esta vez pasamos a verificar una condición que definimos como ' find '
-    if(!this.isModified("password") || this.isNew) return next(); // la segunda cond. pretende verificar si la pass en nueva
-    // cuando un usuario produzca alguna query en algún endpoint, el método -' find '- usado chequea la misma
-    this.find({ active: { $ne: false } }); // método especial de mongoose, permite cambiar el estado del usuario de ' avtiva ' a ' false ' o ' true ', en el que se puede controlar la accesibilidad del usuario
-    next();
+    try{
+        if(!this.isModified("password") || this.isNew) return next(); // la segunda cond. pretende verificar si la pass en nueva
+        // cuando un usuario produzca alguna query en algún endpoint, el método -' find '- usado chequea la misma
+        this.find({ active: { $ne: false } }); // método especial de mongoose, permite cambiar el estado del usuario de ' avtiva ' a ' false ' o ' true ', en el que se puede controlar la accesibilidad del usuario
+        next();
+    }
+    catch{
+        console.log("Catch userModel 3");
+        return next();
+    }
 });
 
 // método para verificar contraseñas

@@ -61,7 +61,7 @@ const Login = ({ setactiveComponent, axios, notifySuccess, notifyError }) => {
             </div>
             <div className= "form__username">
               <label htmlFor= "usr_login">Password</label>
-              <input type="text" className= "input" onChange={(e) => handleFormFieldChange("password", e)} /> 
+              <input type="password" className= "input" onChange={(e) => handleFormFieldChange("password", e)} /> 
             </div>
 
             <div className= "form__alternative">
