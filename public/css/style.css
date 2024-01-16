@@ -1565,7 +1565,7 @@ a.fn__like.has__like .full__like {
     margin: 0 0 0 -20px;
     padding: 0;
     list-style-type: none;
-    display: flex;
+    display: inline;
     justify-content: center;
     flex-wrap: wrap
 }

@@ -48,7 +48,8 @@ const index = () => {
       <Preloader />
       {
         activeComponent == "Signup" ? (
-          <Signup axios={axios} setactiveComponent= {setactiveComponent} notifyError= {notifyError} notifySuccess= {notifySuccess} /> // ' setactiveComponent ' es por si el usuario ya tiene cuenta, entonces se le permite el login
+          <Signup axios={axios} setactiveComponent= {setactiveComponent} 
+            notifyError= {notifyError} notifySuccess= {notifySuccess} /> // ' setactiveComponent ' es por si el usuario ya tiene cuenta, entonces se le permite el login
         ) : (
           <div className= "techwave_fn_wrapper">
             <div className= "techwave_fn_wrap">
