@@ -61,7 +61,7 @@ const index = () => {
                   <Home />
                 ) : activeComponent == "Trade Tokens" ? (
                   <TradeTokens />
-                ) : activeComponent == "Top Exchanges Tokens" ? (
+                ) : activeComponent == "Top Exchange Tokens" ? (
                   <TopExchangeTokens />
                 ) : activeComponent == "Networks" ? (
                   <Networks networkName= {networkName} setnetworkName= {setnetworkName}/>

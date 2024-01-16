@@ -6,7 +6,7 @@ import { Footer } from '../index';
 const TradeTokens = () => {
 
   const [search, setSearch] = useState("");
-  const [searchItem, setSearchItem] = useState(search);
+  const [searchItem, setSearchItem] = useState(search); // se provee la funcionalidad para buscar
   const [tokens, setTokens] = useState([]);
   const [copyTokens, setCopyTokens] = useState([]);
   const [tradeToken, setTradeToken] = useState({});
@@ -42,10 +42,10 @@ const TradeTokens = () => {
 
   useEffect(() => { // mientras el usuario está escribiendo
     const timer = setTimeout(() => setSearch(searchItem), 1000);
-    return () => clearTimeout(timer)
+    return () => clearTimeout(timer);
   }, [searchItem]); // la fn. se llama cada vez que hay cambios en ' searchItem '
 
-  useEffect(() => { //
+  useEffect(() => { // callback para determinar qué acción se debe tomar -> búsqueda dinámica o mostrar todo
     if(search){
       onHandleSearch(search);
     } else{
@@ -58,10 +58,8 @@ const TradeTokens = () => {
   };
 
   return (
-    <div className= "">
-      <div className= "">
-
-      </div>
+    <div className= "techwave_fn_content">
+      <div className= "techwave_fn_page"></div>
     </div>
   )
 }

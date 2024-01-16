@@ -1,15 +1,153 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { FaRegCopy } from "react-icons/fa6";
 
 // internal import
-import { Footer } from '../index'
-import { CONTEXT } from '../../context/context'
+import { Footer } from "../index";
+import { CONTEXT } from "../../context/context";
 
 const TopExchangeTokens = () => {
-  const {} = useContext(CONTEXT);
+  const { topTokens } = useContext(CONTEXT);
+
+  // state variables
+  const [search, setSearch] = useState("");
+  const [searchItem, setSearchItem] = useState(search);
+  const [tokens, setTokens] = useState(topTokens);
+  const [copyTokens, setCopyTokens] = useState(topTokens);
+
+  const onHandleSearch = (value) => { // esta fn. se dispara cuando el usurio escribe en el input, luego se filtra la búsqueda
+    const filterTokens = tokens?.filter(
+        ({name}) => name.toLowerCase().includes(value.toLowerCase())
+      );
+      if(filterTokens?.length === 0){
+        setTokens(copyTokens); // si el usurio no ingresó ningún nombre, se muestran todos los tokens
+      } else{
+        setTokens(filterTokens);
+      }
+  };
+
+  const onClearSearch = () => { // cuando el usuario borra lo que escribió en el input
+    if(tokens?.length && copyTokens?.length){
+      setTokens(copyTokens);
+    }
+  };
+
+  useEffect(() => { // mientras el usuario está escribiendo
+    const timer = setTimeout(() => setSearch(searchItem), 1000);
+    return () => clearTimeout(timer);
+  }, [searchItem]); // la fn. se llama cada vez que hay cambios en ' searchItem '
+
+  useEffect(() => { // callback para determinar qué acción se debe tomar -> búsqueda dinámica o mostrar todo
+    if(search){
+      onHandleSearch(search);
+    } else{
+      onClearSearch();
+    }
+  }, [search]);
 
   return (
-    <div className= "">
-      
+    <div className= "techwave_fn_content">
+      <div className= "techwave_fn_page">
+        <div className= "techwave_fn_community_page">
+          <div className= "fn__title_holder">
+            <div className= "container">
+              <div className= "techwave_fn_page">
+                <h1 className= "title">Top Tokens</h1>
+              </div>
+            </div>
+
+            <div className= "techwave_fn_feed">
+              <div className= "container">
+                <div className= "feed__filter">
+                  <div className= "filter__search">
+                    <input type= "text" placeholder= "Search Token" 
+                      onChange= {(e) => setSearchItem(e.target.value)}
+                      value= {searchItem} />
+                    <a className= "techwave_fn_button">
+                      <span>Search</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className= "techwave_fn_pricing">
+                <div className= "container">
+                  <div className= "pricing__tabs">
+                    <div className= "pricing__tab active">
+                      {/*dispositivos móviles*/}
+                      <div className= "fn__mobile_pricing">
+                        <div className= "pricing__item">
+                          <div className= "pricing__item_holder">
+                            <div className= "pricing__item__heading">
+                              <h2 className= "title">Top 20 Tokens</h2>
+                            </div>
+                            <div className= "pricing__item_list">
+                              {
+                                tokens?.map((token, index) => (
+                                  <div className= "pricing__item_list_item" key= {index}>
+                                    <h4 onClick= {() => navigator.clipboard.writeText(token.id)}
+                                      className= "title">
+                                      {token.name} &nbsp; &nbsp;
+                                      <FaRegCopy />
+                                    </h4> {/*cuando el usuario hace click se copia la dir. del token al portapapeles (' navigator.clipboard.writeText(token.id) ')*/}
+                                    <p className= "desc">
+                                      {token.totalSupply}
+                                    </p>
+                                  </div>
+                                ))
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/*ordenadores*/}
+                      <div className= "pricing__content">
+                        <div className= "pricing__heading">
+                          <div className= "item">
+                            <span className= "title">Top 20 Tokens</span>
+                          </div>
+                          <div className= "item wide"></div>
+                        </div>
+
+                        <div className= "pricing__fields">
+                          {
+                            tokens?.map((token, index) => (
+                              <div className= "item_row">
+                                <div onClick={() => navigator.clipboard.writeText(token.id)}
+                                  className= "item_col">
+                                    <span className= "heading_text">
+                                      {token.name.slice(0, 12)} &nbsp; &nbsp; <FaRegCopy />
+                                    </span> {/*' token.name.slice(0, 12) ' se muestra entre 0 y 12 caracts.; ' &nbsp; ' -> HTML space tag*/}
+                                  </div>
+
+                                  <div className= "item_col">
+                                    <span className= "option_text">
+                                      {token.totalSupply}
+                                    </span>
+                                  </div>
+                                  <div className= "item_col">
+                                    <span className= "option_text">
+                                      {token.totalValueLocked.slice(0, 12)}
+                                    </span>
+                                  </div>
+                                  <div className= "item_col">
+                                    <span className= "option_text">
+                                      {token.symbol}
+                                    </span>
+                                  </div>
+                              </div>
+                            ))
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   )
 }

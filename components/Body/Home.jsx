@@ -13,7 +13,7 @@ const Home = () => {
               <div className= "techwave_fn_title_holder">
                 <h1 className= "title">Automate your crypto trading</h1>
               
-                <p className= "desc">Crypto trading financial bot for buy and sell cryptocurrencies</p>
+                <p className= "desc">Crypto trading financial bot for buy and sell Tokens</p>
               </div>
             
               <div className= "techwave_fn_interactive_list">
