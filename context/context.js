@@ -36,7 +36,6 @@ export const PROVIDER = ({ children }) => {
                 }`; // en esta query se define la data pretendida a recuperar acerca de la info. brindada por Uniswap acerca del token
             const axiosData = await axios.post(URL, {query: query});
             setTopTokens(axiosData.data.data.tokens);
-            console.log(axiosData);
         } catch (error) {
             console.log(error);
         }

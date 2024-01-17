@@ -54,8 +54,9 @@ const TopExchangeTokens = () => {
                 <h1 className= "title">Top Tokens</h1>
               </div>
             </div>
+          </div>
 
-            <div className= "techwave_fn_feed">
+          <div className= "techwave_fn_feed">
               <div className= "container">
                 <div className= "feed__filter">
                   <div className= "filter__search">
@@ -143,7 +144,6 @@ const TopExchangeTokens = () => {
                   </div>
                 </div>
               </div>
-            </div>
           </div>
         </div>
       </div>

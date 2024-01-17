@@ -65,6 +65,8 @@ const index = () => {
                   <TopExchangeTokens />
                 ) : activeComponent == "Networks" ? (
                   <Networks networkName= {networkName} setnetworkName= {setnetworkName}/>
+                ) : activeComponent == "Add Network" ? (
+                  <AddNetwork axios= {axios} notifySuccess= {notifySuccess} notifyError= {notifyError}/>
                 ) : activeComponent == "Trading" ? (
                   <Trading axios= {axios} />
                 ) : activeComponent == "Pricing" ? (
