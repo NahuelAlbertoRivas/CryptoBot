@@ -64,17 +64,18 @@ const index = () => {
                 ) : activeComponent == "Top Exchange Tokens" ? (
                   <TopExchangeTokens />
                 ) : activeComponent == "Networks" ? (
-                  <Networks networkName= {networkName} setnetworkName= {setnetworkName}/>
+                  <Networks networkName= {networkName} setnetworkName= {setnetworkName}
+                    notifySuccess= {notifySuccess} notifyError= {notifyError}/>
                 ) : activeComponent == "Add Network" ? (
-                  <AddNetwork axios= {axios} notifySuccess= {notifySuccess} notifyError= {notifyError}/>
+                  <AddNetwork axios= {axios} notifySuccess= {notifySuccess} notifyError= {notifyError} />
                 ) : activeComponent == "Trading" ? (
                   <Trading axios= {axios} />
                 ) : activeComponent == "Pricing" ? (
                   <Price />
                 ) : activeComponent == "Profile" ? (
-                  <Profile setactiveComponent= {setactiveComponent} />
+                  <Profile setactiveComponent= {setactiveComponent} notifySuccess= {notifySuccess} notifyError= {notifyError} />
                 ) : activeComponent == "Setting" ? (
-                  <Setting />
+                  <Setting axios= {axios} notifySuccess= {notifySuccess} notifyError= {notifyError} />
                 ) : activeComponent == "Add Token Pair" ? (
                   <AddTokenPair />
                 ) : (

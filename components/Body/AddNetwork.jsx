@@ -1,4 +1,3 @@
-import { CreateImageRequestResponseFormatEnum } from 'openai'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 
@@ -45,26 +44,28 @@ const AddNetwork = ({ axios, notifySuccess, notifyError }) => {
   };
 
   const uploadToInfura = async(file) => { // ver documentación (img. to ipfs) -' Pinata ' / ' Infura '-; esta fn. subirá la imagen
+    notifySuccess("Uploading file...");
     if(file){
       try {
         const formData = new FormData();
         formData.append("file", file);
 
         const response = await axios({
-          method: "POST",
-          url: "",
+          method: "post",
+          url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
           data: formData,
           maxBodyLength: "Infinity",
-          header: {
-            pinata_api_key: "",
-            pinata_secret_api_key: "",
-          }
+          headers: {
+            pinata_api_key: "6463788ff1c4e60f2ebc",
+            pinata_secret_api_key: "37969aecab78c704c921884928eb275030635f995b876152032ad34ab8e3deb5",
+            "Content-Type": "multipart/form-data",
+          },
         });
 
-        const ImgHash = `https://getway.pinata.cloud/ipfs/${response.data.IpfsHash}`; // enpoint global para imagenes ' pinata '
-        setNetwork({ ...,network, image:ImgHash });
+        const ImgHash = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`; // enpoint global para imagenes ' pinata '
+        setNetwork({ ...network, image: ImgHash });
         setDisplayImg(ImgHash);
-
+        notifySuccess("File uploaded successfully");
       } catch (error) {
         notifyError("Unable to upload image to pinata");
         console.log(error);
@@ -155,7 +156,7 @@ const AddNetwork = ({ axios, notifySuccess, notifyError }) => {
                       <label htmlFor= "name" className= "input_label">Private key</label>
 
                       <div className= "input_item">
-                        <input type= "text" className= "input" placeholder= "Private key" 
+                        <input type= "password" className= "input" placeholder= "Private key" 
                           onChange={(e) => handleFormFieldChange("privateKey", e)} />
                       </div>
                     </div>
