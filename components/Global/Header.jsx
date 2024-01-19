@@ -12,7 +12,7 @@ const Header = ({ networkName, setactiveComponent }) => {
 
     setUserMembership(userMembership);
     setUserDetails(user);
-  })
+  }, []);
 
   return (
     <div className= "techwave_fn_header">

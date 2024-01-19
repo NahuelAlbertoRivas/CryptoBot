@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 // internal import
 import {  } from "../../utils/index"
-import { local } from 'web3modal';
 
 const Profile = ({ setactiveComponent, notifySuccess, notifyError }) => {
 
@@ -39,7 +38,7 @@ const Profile = ({ setactiveComponent, notifySuccess, notifyError }) => {
                     <li>
                       <div className= 'item'>
                         <h4 className= 'subtitle'>Username</h4>
-                        <h3 className= 'title'>{ userDetails?.username || "Undefined" }</h3>
+                        <h3 className= 'title'>{ userDetails?.userName || "Undefined" }</h3>
                       </div>
                     </li>
                     <li>

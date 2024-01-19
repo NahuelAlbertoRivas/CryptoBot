@@ -4,14 +4,16 @@ import { useDropzone } from 'react-dropzone'
 const Setting = ({ axios, notifySuccess, notifyError }) => {
 
   const [displayImg, setDisplayImg] = useState("");
+  const [userDetails, setUserDetails] = useState({});
   
   useEffect(() => { 
-    const user = JSON.parse(localStorage.getItem("setUser"));
-    setUser(user);
+    const user = JSON.parse(localStorage.getItem("userProfile"));
+    setUserDetails(user);
+    if(user !== null && user.displayImg !== "") setDisplayImg(user?.image);
   }, []);
 
   const [user, setUser] = useState({ // esta configuración da la libertad al usuario de que use distintas direcciones de su wallet con cualquier network existente
-    uname: "",
+    name: "",
     userName: "",
     walletAddress: "",
     privateKey: "",
@@ -19,27 +21,38 @@ const Setting = ({ axios, notifySuccess, notifyError }) => {
     biography: ""
   });
 
-  const handleFormFieldChange = (fieldName, e) => {// fn. que permitirá actualizar la info. de ' network '
+  const handleFormFieldChange = (fieldName, e) => { // fn. que permitirá actualizar la info. de ' network '
     setUser({ ...user, [fieldName]: e.target.value }) ; // se ' deconstruye ' el objeto
   };
 
-  const storeUser = () => {
+  const storeProfile = () => {
     const { 
-      uname, 
+      name, 
       userName,
       walletAddress, 
       privateKey, 
       image,
       biography} = user;
 
-      if(!uname || !userName || !walletAddress || !privateKey || !image)
+      if(userDetails !== null){
+        console.log(userDetails.name);
+        console.log(userDetails.userName);
+        console.log(userDetails.walletAddress);
+      }
+
+      if((userDetails === null) && (!name || !userName || !walletAddress || !privateKey || !image))
         return notifyError("Please, provide all data");
+      else{
+        Object.keys(user).forEach((key) => {
+          if(user[key] === "") user[key] = userDetails[key];
+        });
+      }
       
-      localStorage.setItem("setUser", JSON.stringify(user));
+      localStorage.setItem("userProfile", JSON.stringify(user));
       notifySuccess("Profile updated successfully!");
   };
 
-  const uploadToInfura = async(file) => { // ver documentación (img. to ipfs) -' Pinata ' / ' Infura '-; esta fn. subirá la imagen
+  const uploadToInfura = async (file) => { // ver documentación (img. to ipfs) -' Pinata ' / ' Infura '-; esta fn. subirá la imagen
     notifySuccess("Uploading file...");
     if(file){
       try {
@@ -73,12 +86,19 @@ const Setting = ({ axios, notifySuccess, notifyError }) => {
     await uploadToInfura(acceptedFile[0]);
   });
   
+  const handleImageChange = async (file) => {
+    //const file = e?.target.files[0];
+    if (file) {
+        await uploadToInfura(file);
+    }
+  };
+
   const { 
     getInputProps, 
     getRootProps, 
     isDragAccept, 
     isDragReject,
-    isDragActive } = useDropzone({ onDrop, maxSize: 500000000000 });
+    isDragActive, } = useDropzone({ onDrop, maxSize: 500000000000 });
 
   return (
     <div className= "techwave_fn_content">
@@ -109,7 +129,11 @@ const Setting = ({ axios, notifySuccess, notifyError }) => {
                             <input type= "file" accept= "image/*" { ...getInputProps() } />
                           </span>
                         ) : (
-                          <img src= { displayImg } className= "preview_img" alt= "" />
+                          <span className= 'upload_content' { ...getRootProps() }>
+                            <img src= { displayImg } className= "preview_img" alt= ""
+                              style= {{flex: 1}} />
+                            <input type="file" accept= 'image/*' { ...getInputProps() } />
+                          </span>
                         )
                       }
                     </label>
@@ -120,46 +144,51 @@ const Setting = ({ axios, notifySuccess, notifyError }) => {
                       <label htmlFor= "name" className= "input_label">Name</label>
 
                       <div className= "input_item">
-                        <input type= "text" className= "input" placeholder= {setUser?.uname || "John Andersen"}
-                          onChange={(e) => handleFormFieldChange("name", e)} />
+                        <input type= "text" className= "input" placeholder= {userDetails?.name || "John Andersen"}
+                          onChange={(e) => handleFormFieldChange("name", e)}
+                          defaultValue={userDetails?.name} />
                       </div>
                     </div>
                     <div className= "item">
                       <label htmlFor= "name" className= "input_label">Username</label>
 
                       <div className= "input_item">
-                        <input type= "text" className= "input" placeholder= {setUser?.userName || "@user" }
-                          onChange={(e) => handleFormFieldChange("username", e)} />
+                        <input type= "text" className= "input" placeholder= {userDetails?.userName || "@johnanderseb" }
+                          onChange={(e) => handleFormFieldChange("userName", e)}
+                          defaultValue={userDetails?.userName} />
                       </div>
                     </div>
                     <div className= "item">
                       <label htmlFor= "name" className= "input_label">Wallet address</label>
 
                       <div className= "input_item">
-                        <input type= "text" className= "input" placeholder= {setUser?.walletAddress || "Address"} 
-                          onChange={(e) => handleFormFieldChange("walletAddress", e)} />
+                        <input type= "text" className= "input" placeholder= {userDetails?.walletAddress || "Address"} 
+                          onChange={(e) => handleFormFieldChange("walletAddress", e)}
+                          defaultValue={userDetails?.walletAddress} />
                       </div>
                     </div>
                     <div className= "item">
                       <label htmlFor= "name" className= "input_label">Private key</label>
 
                       <div className= "input_item">
-                        <input type= "password" className= "input" placeholder= "Private key" 
-                          onChange={(e) => handleFormFieldChange("privateKey", e)} />
+                        <input type= "text" className= "input" placeholder= "Private key" 
+                          onChange={(e) => handleFormFieldChange("privateKey", e)}
+                          defaultValue={userDetails?.privateKey} />
                       </div>
                     </div>
                     <div className= "item">
                       <label htmlFor= "name" className= "input_label">Biography</label>
 
                       <div className= "input_item">
-                        <textarea className= "input" placeholder= {setUser?.biography || "About you"}
-                          onChange={(e) => handleFormFieldChange("biography", e)} />
+                        <textarea className= "input" placeholder= {userDetails?.biography || "About you"}
+                          onChange={(e) => handleFormFieldChange("biography", e)}
+                          defaultValue={userDetails?.biography} />
                       </div>
                     </div>
 
                     <div className= "item">
                       <div>
-                        <a onClick={() => storeNetwork()} className= "techwave_fn_button">Save profile</a>
+                        <a onClick={() => storeProfile()} className= "techwave_fn_button">Save profile</a>
                       </div>
                     </div>
                   </div>
