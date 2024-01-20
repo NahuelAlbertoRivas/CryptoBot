@@ -34,12 +34,6 @@ const Setting = ({ axios, notifySuccess, notifyError }) => {
       image,
       biography} = user;
 
-      if(userDetails !== null){
-        console.log(userDetails.name);
-        console.log(userDetails.userName);
-        console.log(userDetails.walletAddress);
-      }
-
       if((userDetails === null) && (!name || !userName || !walletAddress || !privateKey || !image))
         return notifyError("Please, provide all data");
       else{
@@ -86,12 +80,12 @@ const Setting = ({ axios, notifySuccess, notifyError }) => {
     await uploadToInfura(acceptedFile[0]);
   });
   
-  const handleImageChange = async (file) => {
+  /* const handleImageChange = async (file) => {
     //const file = e?.target.files[0];
     if (file) {
         await uploadToInfura(file);
     }
-  };
+  }; */
 
   const { 
     getInputProps, 

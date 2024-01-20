@@ -5,25 +5,25 @@ import toast from "react-hot-toast";
 
 // internal import
 import{
-    Header, 
-    Footer, 
-    Search, 
-    MovingSubmenu, 
-    Preloader, 
-    SideBar, 
-    Signup, 
-    useTimeout, 
-    AddNetwork, 
-    AddTokenPair, 
-    Home, 
-    Networks, 
-    Price, 
-    Profile, 
-    Setting, 
-    TopExchangeTokens, 
-    TradeTokens, 
-    Trading,
-    Login
+  Header, 
+  Footer, 
+  Search, 
+  MovingSubmenu, 
+  Preloader, 
+  SideBar, 
+  Signup, 
+  useTimeout, 
+  AddNetwork, 
+  AddTokenPair, 
+  Home, 
+  Networks, 
+  Price, 
+  Profile, 
+  Setting, 
+  TopExchangeTokens, 
+  TradeTokens, 
+  Trading,
+  Login
 } from '../components/index'
 import { CONTEXT } from '../context/context'
 import Head from "next/head";
